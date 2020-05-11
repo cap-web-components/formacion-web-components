@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CustomElementRegistry</title>
+</head>
+<body>
+  <div id="root"></div>
+  <script>
+    
+    const $root = document.querySelector('#root');
+    
+    /**
+     * Controlamos que ocurre cuando nuestro componente
+     * cuando esta resgistrado y listo para ser utilizado
+     */
+    customElements.whenDefined('app-link')
+      .then(function() {
+        [1, 2, 3].forEach((val) => {
+          const $appLink = document.createElement('app-link');
+          $appLink.setAttribute('href', 'https://github.com/mmirca/cap-web-components');
+          $appLink.innerHTML = `<h1>Link ${val}</h1>`;
+          $root.appendChild($appLink);
+        });
+      })
+      .catch(function(e) {
+        const $message = document.createElement('p');
+        $message.innerText = 'Ha ocurrido un error cargando la aplicación.'
+        $root.append($message);
+      });
+    
+    /**
+    * Definimos la funcionalidad de nuestro componente en una clase
+    * Todos los componentes web extienden de un elemento HTML
+    */
+    class AppLink extends HTMLElement {
+
+      get mouseLeaveColor() {
+        return this._mouseLeaveColor || 'inherit';
+      }
+
+      set mouseLeaveColor(val) {
+        this._mouseLeaveColor = val;
+      }
+      
+      constructor() {
+        super();
+        this.onmouseenter = () => {
+          this.style.textDecoration = 'underline'
+          this.style.color = 'royalblue'
+        };
+        this.onmouseleave = () => {
+          this.style.textDecoration = 'none';
+          this.style.color = this.mouseLeaveColor;
+        };
+        this.onclick = () => {
+          const href = this.getAttribute('href');
+          this.openLink(href);
+        }
+      }
+
+      openLink(link) {
+        if (link) {
+          window.open(link);
+          this.mouseLeaveColor = 'purple';
+        }
+      }
+      
+    }
+    
+    /**
+     * Registramos el componente "app-link" solo si no encotramos
+     * otro componente ya registrado con ese nombre
+     */
+    if (!customElements.get('app-link')) {
+      customElements.define('app-link', AppLink);
+    }
+
+  </script>
+</body>
+</html>
