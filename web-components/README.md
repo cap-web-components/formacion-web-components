@@ -68,10 +68,14 @@ Se ha deperecado en favor de `disconnectedCallback`, su función es la misma.
 
 
 
-```html
-<div>
-  
-</div>
+```javascript
+class MyShadyElement extends HTMLElement {
+
+  constructor() {
+    
+  }
+
+}
 ```
 
 
