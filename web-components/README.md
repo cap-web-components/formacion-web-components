@@ -10,13 +10,13 @@ Actualmente estamos viviendo una adopción similar con los frameworks front-end.
 
 Todavía es pronto para predecir el futuro de la web pero parece que la historia se repite porque vemos que las innovaciones de los framework se convierten en un estándar.
 
+Ahora bien, cuando hablamos de Web Components en realidad estamos hablando de un conjunto de APIs que nos expone el navegador y que utilizamos para la creación de componentes nativos.
+
 
 
 ## Custom Elements
 
-Cuando hablamos de Web Components hacemos referencia a un conjunto de APIs del navegador que nos permite crear bloques de HTML encapsulados y reutilizables.
-
-
+Son bloques de HTML encapsulados y reutilizables resultado de un conjunto de expecificaciones.
 
 ### CustomElementRegistry
 
@@ -30,53 +30,41 @@ Esta API del navegador por si sola nos permite crear bloques de funcionalidad re
 
 Puedes ver un ejemplo de implementación en [custom-element-registry.html](./custom-element-registry.html)
 
-
-
 ### Ciclo de vida
 
-`constructor`
+La API de custom elements, como los componentes desarrollados con Angular/React/Vue, expone una serie de "hooks" que podemos utilizar para ejecutar código: 
 
-Se ejecuta cuando se instancia la clase asociada al componente en el registro. Se suele utilizar para definir el estado inicial del componente.
+* **constructor:** Se ejecuta cuando se instancia la clase asociada al componente en el registro. Se suele utilizar para definir el estado inicial del componente.
 
-`connectedCallback`
+* **connectedCallback:** Se ejecuta cuando una instancia del componente se ha conectado correctamente al DOM. Se suele utilizar para ejecutar las operaciones iniciales como renderizar contenido y añadir listeners.
 
-Se ejecuta cuando una instancia del componente se ha conectado correctamente al DOM. Se suele utilizar para ejecutar las operaciones iniciales como renderizar contenido y añadir listeners.
+* **disconnectedCallback:** Se ejecuta cuando una instancia del componente se desconecta del DOM. Se suele utilizar para eliminar todas las subscripciones activas del componente.
 
-`disconnectedCallback`
+* **attributeChangedCallback:** Se ejecuta cuando uno de los atributos definidos en la propiedad estática `observedAttributes` cambia. Se suele utilizar para reaccionar a cambios producidos desde el exterior.
 
-Se ejecuta cuando una instancia del componente se desconecta del DOM. Se suele utilizar para eliminar todas las subscripciones activas del componente.
+* **adoptedCallback:** Se ejecuta cuando el componente cambia de documento con el método `adoptNode`. Se utiliza en situaciones puntuales como podría ser la clonación de un componente desde un documento principal a un iframe.
 
-`attributeChangedCallback`
+* **attachedCallback (deprecado):** Se ha deprecado en favor de `connectedCallback`, su función es la misma.
 
-Se ejecuta cuando uno de los atributos definidos en la propiedad estática `observedAttributes` cambia. Se suele utilizar para reaccionar a cambios producidos desde el exterior.
+* **detachedCallback (deprecado):** Se ha deperecado en favor de `disconnectedCallback`, su función es la misma.
 
-`adoptedCallback`
-
-Se ejecuta cuando el componente cambia de documento con el método `adoptNode`. Se utiliza en situaciones puntuales como podría ser la clonación de un componente desde un documento principal a un iframe.
-
-`attachedCallback (deprecado)`
-
-Se ha deprecado en favor de `connectedCallback`, su función es la misma.
-
-`detachedCallback (deprecado)`
-
-Se ha deperecado en favor de `disconnectedCallback`, su función es la misma.
+Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
 
 
 
-### Shadow DOM
+## Shadow DOM
+
+Es una especificación que se incorpora a la API del [DOM (Document Object Model)](DOM (Document Object Model)). Nos permite crear árboles de elementos encapsulados dentro de nuestro documento principal.
+
+![shadow-dom](../assets/shadow-dom.png)
+
+Su comportamiento es parecido al de un `iframe` en el sentido de que sus elementos no son directamente accesibles desde el documento padre y sus estilos quedan encapsulados, no afectan al documento padre y viceversa.
+
+Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
 
 
 
-```html
-<div>
-  
-</div>
-```
-
-
-
-### Templates
+## Templates
 
 Es un elemento HTML que permite declarar fragmentos de DOM que se analizan, permanecen inactivos durante la carga de la página y se pueden activar más adelante en el tiempo de ejecución. Son marcadores de posición ideales para declarar la estructura de un elemento personalizado.
 
@@ -101,17 +89,33 @@ Es un elemento HTML que permite declarar fragmentos de DOM que se analizan, perm
 </script>
 ```
 
+Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
 
 
-### Custom Events
 
-...
+## Custom Events
+
+La API de [custom events](https://developer.mozilla.org/es/docs/Web/Guide/DOM/Events/Creacion_y_Activaci%C3%B3n_Eventos) es anterior a las APIs de web components. Sin embargo, es una de las APIs más importantes porque es la que nos permite comunicar cambios desde el componente al exterior.
+
+Se utiliza para crear eventos que emitimos desde nuestro componente con el método `dispatchEvent`, presente en cualquier elemento HTML.
+
+```javascript
+const event = new CustomEvent('event-name', {
+  bubbles: true, // Con esta opción el evento se propaga hasta la raíz del DOM
+  composed: true, // Con esta opción el evento atraviese las barreras del shadow DOM
+  detail: 'Payload del evento'
+});
+
+$element.dispatchEvent(event);
+```
+
+Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
 
 
 
 ## Módulos ESM
 
-Quedan deprecados los `HTML imports` en favor de los módulos `esm`.
+Es el estándar utilizado para estructurar los proyectos basados en web components V1. La potencia de los módulos se siente sobre todo cuando utilizamos un gestor de paquetes como npm. Esto nos permite tener archivos JS modulares que podemos utilizar en varios proyectos.
 
 _**my-esm-module.js**_
 
@@ -139,9 +143,26 @@ _**index.html**_
 
 ## Custom Properties
 
-...
+Es la especificación en la que nos basamos para permitir que los componentes que desarrollamos sean personalizables. Esencialmente son variables en CSS, muy parecidas a las variables introducidad en SCSS.
 
+Se utilizan en el desarrollo de componentes web porque atraviesan las barreras del shadow DOM. Esto nos permite influir desde fuera sobre los estilos encapsulados de los componentes de una forma controlada.
 
+También es importante recalcar que las custom properties, a diferencia de las variables de SCSS, se pueden actualizar en tiempo de ejecución.
 
+Para definir una variable utilizamos cualquier nombre prefijado por `--`, por ejemeplo:
 
+```css
+  body {
+    --primary-color: red;
+  }
+```
 
+Luego, para utilizarlas tenemos que usar el método `var` de css:
+
+```css
+  h1 {
+    color: var(--primary-color, royalblue);
+  }
+```
+
+Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
