@@ -8,6 +8,10 @@ Para empezar a desarrollar componentes web se necesitan las siguientes herramien
 
 Es el navegador que más rápido implementa las APIs relacionadas con los componentes web. Se puede descargar desde la [página oficial](https://www.google.com/intl/es_es/chrome/).
 
+También podemos utilizar otros navegadores que soporten la especificación v1 de web components.
+
+![web-components-v1-browser-support](../assets/web-components-v1-browser-support.png)
+
 
 
 ## Node 8+

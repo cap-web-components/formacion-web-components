@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>App Counter</title>
+  <style>
+    body {
+      /**
+       * Las propiedades definidas a nivel de body asociadas a texto com font-family, font-size, etc.
+       * son las únicas que atraviesan el shadow DOM y se heredan en los custom elements
+       */
+      font-family: sans-serif;
+      max-width: 450px;
+      margin: 25px auto 50px;
+    }
+    h1 {
+      color: royalblue;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Counter App</h1>
+  <!-- Este elemento será nuestro punto de entrada -->
+  <div id="root"></div>
+  <!-- Crearemos nuestro componente a partir de esta plantilla -->
+  <template id="app-counter">
+    <style>
+      :host {
+        /**
+         * este selector hace referencia al elemento que utiliza los estilos
+         * En este caso sería "app-counter"
+         */
+        display: block;
+        box-shadow: 0px 2px 5px #e2e2e2;
+        border-radius: 2px;
+        box-sizing: border-box;
+        padding: 20px;
+        text-align: center;
+      }
+      h1 {
+        font-size: 16px !important;
+        color: #222 !important;
+        /**
+         * Aunque estemos utilizando el mismo selector que en el documento principal (además con important),
+         * podemos ver que los estilos quedan encapsulados dentro del shadow DOM
+         */
+      }
+      button {
+        display: block;
+        width: 100%;
+        font-size: 1em;
+        font-weight: bold;
+        color: white;
+        background-color: royalblue;
+        padding: 6px 0px;
+      }
+    </style>
+    <h1>Número de Clicks: <span id="counter">0</span></h1>
+    <button id="increment-count">INCREMENTAR</button>
+  </template>
+  <script>
+
+    /**
+     * Vamos a crear un componente simple con un contador que se incremente cada vez que hacemos
+     * click sobre un botón
+     *
+     * Este componente emite un evento cada vez que el contador cambia que tiene como "payload"
+     * el nuevo valor del contador
+     *
+     * Cada vez que el contador llegue a un múltiplo de 5 queremos mostrar un "alert" en el navegador
+     * indicando el número alcanzado
+     */
+
+    document.addEventListener('counter-changed', function(event) {
+      const count = event.detail;
+      if (count % 5 === 0) {
+        alert(`Hemos llegado al número: ${count}!!`);
+      }
+    });
+
+    const $root = document.querySelector('#root');
+
+    customElements.whenDefined('app-counter')
+      .then(function() {
+        const $appCounter = document.createElement('app-counter');
+        $root.appendChild($appCounter);
+      })
+      .catch(function(e) {
+        const $message = document.createElement('p');
+        $message.innerText = 'Ha ocurrido un error cargando la aplicación.'
+        $root.append($message);
+      });
+    
+    class AppCounter extends HTMLElement {
+      
+      constructor() {
+        super();
+        /**
+         * En modo close ocultamos la referencia al shadow DOM del elemento
+         * Es decir, this.shadowRoot retorna undefined
+         * Como norma general se utiliza "open"
+         */
+        this.attachShadow({ mode: 'open' });
+        const $template = document.querySelector('#app-counter');
+        const $content = document.importNode($template.content, true);
+        this.shadowRoot.appendChild($content);
+      }
+
+      connectedCallback() {
+        /**
+         * Utilizamos este hook del ciclo de vida para subscribirnos a eventos
+         * porque aquí estamos seguros de que nuestro componente ya forma parte del DOM
+         * y ha cargado su contenido
+         */
+        this._listeners = [];
+        const $incrementCount = this.shadowRoot.querySelector('#increment-count');
+        const incrementCountClickHandler = () => {
+          const $counter = this.shadowRoot.querySelector('#counter');
+          const currentCount = Number($counter.innerText);
+          const nextCount = currentCount + 1;
+          $counter.innerText = nextCount;
+          /**
+           * En cada click emitimos un evento al que cualquier elemento padre se
+           * puede subscribir para utilizar el dato
+           */
+          const event = new CustomEvent('counter-changed', {
+            bubbles: true, // Con esta opción el evento se propaga hasta la raíz del DOM
+            composed: true, // Con esta opción el evento atraviese las barreras del shadow DOM
+            detail: nextCount // Este es el "payload" del evento
+          });
+          this.dispatchEvent(event);
+        };
+        $incrementCount.addEventListener('click', incrementCountClickHandler);
+        this._listeners.push({
+          event: 'click',
+          handler: incrementCountClickHandler,
+          element: $incrementCount
+        });
+      }
+
+      disconnectedCallback() {
+        /**
+         * Utilizamos este hook para borrar todas las subscripciones del elemento
+         * Este paso es muy importante para la optimiazción de memoria
+         */
+        this._listeners.forEach((listener) => {
+          const { element, event, handler } = listener;
+          element.removeEventListener(event, handler);
+        });
+      }
+
+    }
+
+    if (!customElements.get('app-counter')) {
+      customElements.define('app-counter', AppCounter);
+    }
+
+  </script>
+</body>
+</html>
