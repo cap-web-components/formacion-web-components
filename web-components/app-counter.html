@@ -13,6 +13,7 @@
       font-family: sans-serif;
       max-width: 450px;
       margin: 25px auto 50px;
+      --btn-background: royalblue;
     }
     h1 {
       color: royalblue;
@@ -51,8 +52,8 @@
         width: 100%;
         font-size: 1em;
         font-weight: bold;
-        color: white;
-        background-color: royalblue;
+        color: var(--btn-foreground, white);
+        background-color: var(--btn-background, brown);
         padding: 6px 0px;
       }
     </style>

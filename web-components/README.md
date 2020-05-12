@@ -16,7 +16,7 @@ Ahora bien, cuando hablamos de Web Components en realidad estamos hablando de un
 
 ## Custom Elements
 
-Son bloques de HTML encapsulados y reutilizables resultado de un conjunto de APIs del navegador.
+Son bloques de HTML encapsulados y reutilizables resultado de un conjunto de expecificaciones.
 
 ### CustomElementRegistry
 
@@ -115,7 +115,7 @@ Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
 
 ## Módulos ESM
 
-Quedan deprecados los `HTML imports` en favor de los módulos `esm`.
+Es el estándar utilizado para estructurar los proyectos basados en web components V1. La potencia de los módulos se siente sobre todo cuando utilizamos un gestor de paquetes como npm. Esto nos permite tener archivos JS modulares que podemos utilizar en varios proyectos.
 
 _**my-esm-module.js**_
 
@@ -143,9 +143,26 @@ _**index.html**_
 
 ## Custom Properties
 
-...
+Es la especificación en la que nos basamos para permitir que los componentes que desarrollamos sean personalizables. Esencialmente son variables en CSS, muy parecidas a las variables introducidad en SCSS.
 
+Se utilizan en el desarrollo de componentes web porque atraviesan las barreras del shadow DOM. Esto nos permite influir desde fuera sobre los estilos encapsulados de los componentes de una forma controlada.
 
+También es importante recalcar que las custom properties, a diferencia de las variables de SCSS, se pueden actualizar en tiempo de ejecución.
 
+Para definir una variable utilizamos cualquier nombre prefijado por `--`, por ejemeplo:
 
+```css
+  body {
+    --primary-color: red;
+  }
+```
 
+Luego, para utilizarlas tenemos que usar el método `var` de css:
+
+```css
+  h1 {
+    color: var(--primary-color, royalblue);
+  }
+```
+
+Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
