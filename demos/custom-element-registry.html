@@ -13,7 +13,7 @@
     const $root = document.querySelector('#root');
     
     /**
-     * Controlamos que ocurre cuando nuestro componente
+     * Controlamos que ocurre con nuestro componente
      * cuando esta resgistrado y listo para ser utilizado
      */
     customElements.whenDefined('app-link')
@@ -32,9 +32,9 @@
       });
     
     /**
-    * Definimos la funcionalidad de nuestro componente en una clase
-    * Todos los componentes web extienden de un elemento HTML
-    */
+     * Definimos la funcionalidad de nuestro componente en una clase
+     * Todos los componentes web extienden de un elemento HTML
+     */
     class AppLink extends HTMLElement {
 
       get mouseLeaveColor() {

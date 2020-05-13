@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    body {
+      max-width: 450px;
+      margin: 25px auto 50px;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <!--
+    app-card expone una serie de slots nombrados que solo podemos utilizar
+    cuando utilizamos el atributo "slot" con el nombre de cada uno
+  -->
+  <app-card>
+    <span slot="title">Mi </span>
+    <!--
+      Podemos utilizar el atributo slot con el mismo valor varias veces
+      Esto hará que todo el contenido marcado con este slot entre en el mismo sitio
+    -->
+    <span slot="title">Tarjeta</span>
+    <p slot="body">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime, earum dolorem! Suscipit, in alias quo veritatis sequi necessitatibus non dicta modi, eligendi sed illum est, placeat magni obcaecati dolorum voluptates.
+    </p>
+    <span slot="footer">12/12/2000</span>
+  </app-card>
+
+  <!--
+    app-box tiene un slot generico por lo que no hay necesidad de
+    declarar un nombre de slot para utilizarlo
+  -->
+  <app-box>Simple Box</app-box>
+
+  <script>
+
+    class AppBox extends HTMLElement {
+
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.innerHTML = `
+          <style>
+            .box {
+              box-shadow: 0px 2px 5px #e2e2e2;
+              box-sizing: border-box;
+              padding: 25px;
+              margin: 10px;
+            }
+          </style>
+          <div class="box">
+            <slot></slot>
+          </div>
+        `;
+      }
+
+    }
+
+    customElements.define('app-box', AppBox);
+
+    class AppCard extends AppBox {
+
+      constructor() {
+        super();
+        this.shadowRoot.innerHTML = `
+          <app-box>
+            <div>
+              <h1>
+                <slot name="title"></slot>
+              </h1>
+              <hr>
+              <slot name="body"></slot>
+              <small>
+                <slot name="footer"></slot>
+              </small>
+            </div>
+          </app-box>
+        `;
+      }
+
+    }
+
+    customElements.define('app-card', AppCard);
+
+  </script>
+</body>
+</html>
