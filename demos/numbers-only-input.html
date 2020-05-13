@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Number Only Input</title>
+  <style>
+    body {
+      max-width: 450px;
+      margin: 25px auto 50px;
+      font-family: sans-serif;
+    }
+    input {
+      width: 100%;
+      font-size: 1rem;
+      border: 1px solid #e2e2e2;
+      border-radius: 3px;
+      padding: 6px 12px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+  <h1>Numeric Only Input</h1>
+  <input
+    is="numbers-only-input"
+    placeholder="Solo numeros"
+  >
+  <script>
+
+    class NumbersOnlyInput extends HTMLInputElement {
+
+      connectedCallback() {
+        this.onkeypress = (event) => {
+          if (!this._isNumericCharCode(event.charCode)) {
+            event.preventDefault();
+          }
+        }
+      }
+
+      _isNumericCharCode(charCode) {
+        return charCode >= 48 && charCode <= 57;
+      }
+
+    }
+
+    customElements.define('numbers-only-input', NumbersOnlyInput, { extends: 'input' });
+  </script>
+</body>
+</html>
