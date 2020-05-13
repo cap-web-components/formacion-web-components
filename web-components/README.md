@@ -166,3 +166,43 @@ Luego, para utilizarlas tenemos que usar el método `var` de css:
 ```
 
 Se puede ver un caso práctico en [app-counter.html](../demos/app-counter.html)
+
+
+
+## Slots
+
+El elemento `slot` se utiliza para proyectar contenido en los componentes web. Podemos pensar en los slots como marcadores de posición donde permitimos inyectar contenido externo en nuestro componente.
+
+Podemos declarar slots genéricos que proyectan cualquier contenido que se introduce entre las etiquetas del selector.
+
+```html
+<template id="my-element">
+  <div class="box">
+    <slot></slot>
+  <div>
+</template>
+
+<my-element>
+  <h1>Hello from the generic slot</h1>
+<my-element>
+```
+
+También podemos definir slots por nombres que solo proyectarán el contenido que tenga el atributo `slot` con el nombre de algún slot que hayamos definido.
+
+```html
+<template id="my-element">
+  <h1>
+    <slot name="title"></slot>
+  </h1>
+  <div class="content">
+    <slot></slot>
+  </div>
+</template>
+
+<my-element>
+  <p>Hola desde el slot genérico de my-element</p>
+  <span name="title">Hola desde el título de my-element</span>
+</my-element>
+```
+
+Se puede ver un caso práctico en [app-card.html](../demos/app-card.html)
