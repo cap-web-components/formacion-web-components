@@ -2,7 +2,7 @@
 
 Por definición los componentes son extensibles. Ahora bien, a la hora de extender un componente, tenemos que diferenciar entre si quremos diferenciar un componente HTML nativo o un custom element.
 
-## Extensión de elmentos HTML nativos
+## Extensión de elementos HTML nativos
 
 Utilizando las APIs del navegador podemos extender los componentes bases que nos proporciona. De hecho, esta es considerada un buena práctica para el desarrollo de [Progresive Web Apps](https://web.dev/progressive-web-apps/) ya que partimos de una base que extendemos a medida que el navegador carga nuestros elementos.
 
