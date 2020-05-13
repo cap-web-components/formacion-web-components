@@ -1,4 +1,4 @@
-# Extensión de elementos HTML
+# Extensión de elementos
 
 Por definición los componentes son extensibles. Ahora bien, a la hora de extender un componente, tenemos que diferenciar entre si quremos diferenciar un componente HTML nativo o un custom element.
 
