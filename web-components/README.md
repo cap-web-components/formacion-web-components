@@ -28,7 +28,7 @@ Es una API del navegador que nos permite registrar nuevas etiquetas HTML que enc
 
 Esta API del navegador por si sola nos permite crear bloques de funcionalidad reutilizables, parecidos a las directivas de angular.
 
-Puedes ver un ejemplo de implementación en [custom-element-registry.html](./custom-element-registry.html)
+Puedes ver un ejemplo de implementación en [custom-element-registry.html](../demos/custom-element-registry.html)
 
 ### Ciclo de vida
 
@@ -48,7 +48,7 @@ La API de custom elements, como los componentes desarrollados con Angular/React/
 
 * **detachedCallback (deprecado):** Se ha deperecado en favor de `disconnectedCallback`, su función es la misma.
 
-Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
+Se puede ver un caso práctico en [app-counter.html](../demos/app-counter.html)
 
 
 
@@ -60,7 +60,7 @@ Es una especificación que se incorpora a la API del [DOM (Document Object Model
 
 Su comportamiento es parecido al de un `iframe` en el sentido de que sus elementos no son directamente accesibles desde el documento padre y sus estilos quedan encapsulados, no afectan al documento padre y viceversa.
 
-Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
+Se puede ver un caso práctico en [app-counter.html](../demos/app-counter.html)
 
 
 
@@ -89,7 +89,7 @@ Es un elemento HTML que permite declarar fragmentos de DOM que se analizan, perm
 </script>
 ```
 
-Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
+Se puede ver un caso práctico en [app-counter.html](../demos/app-counter.html)
 
 
 
@@ -109,7 +109,7 @@ const event = new CustomEvent('event-name', {
 $element.dispatchEvent(event);
 ```
 
-Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
+Se puede ver un caso práctico en [app-counter.html](../demos/app-counter.html)
 
 
 
@@ -165,4 +165,4 @@ Luego, para utilizarlas tenemos que usar el método `var` de css:
   }
 ```
 
-Se puede ver un caso práctico en [app-counter.html](./app-counter.html)
+Se puede ver un caso práctico en [app-counter.html](../demos/app-counter.html)
