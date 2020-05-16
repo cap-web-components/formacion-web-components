@@ -1,4 +1,4 @@
-# Polymer
+# Polymer Project
 
 Es un proyecto empezado por un equipo de desarrolladores front-end de Chrome. Los proyectos en los que trabajan suelen estar orientados a hacer uso de las APIs del nevagador, son conocidos por el proyecto de Web Components.
 
@@ -250,13 +250,13 @@ class MyElement extends LitElement {
 customElements.define('my-element', MyElement);
 ```
 
-Para emitir eventos se utilizan los [Custom Events](../web-components/).
+Para emitir eventos se utilizan los [Custom Events](./web-components.md).
 
 
 
 ### Ciclo de vida
 
-LitElement extiende el [ciclo de vida](../web-components) de los custom elements con los siguientes "hooks" en orden de ejecución:
+LitElement extiende el [ciclo de vida](./web-components.md) de los custom elements con los siguientes "hooks" en orden de ejecución:
 
 1. **`someProperty.hasChanged`** el primer método que se dispara el definido en `hasChanged` para determinar si la propiedad ha cambiado.
 2. **`requestUpdate`** método con el que podemos iniciar un renderizado indicando la propiedad que ha cambiado.
