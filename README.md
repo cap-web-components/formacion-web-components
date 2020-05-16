@@ -1,7 +1,7 @@
 # Formación Web Components
 
-1. [Entorno de desarrollo](./entorno-de-desarrollo)
-2. [Web Components](./web-components)
-3. [Extensión de elementos](./extension-de-elementos)
-4. [Librerías de componentes](./librerias-de-componentes)
-5. [Polymer](./polymer)
+1. [Entorno de desarrollo](./docs/entorno-de-desarrollo.md)
+2. [Web Components](./docs/web-components.md)
+3. [Extensión de elementos](./docs/extension-de-elementos.md)
+4. [Librerías de componentes](./docs/librerias-de-componentes.md)
+5. [Polymer project](./docs/polymer-project.md)
