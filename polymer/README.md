@@ -225,10 +225,45 @@ customElements.define('my-element', MyElement);
 
 ### Eventos
 
-aa
+Como hemos visto en la sección de data binding, LitElement nos permite hacer el binding de métodos a eventos utilizando `@` seguido del nombre del evento en camel case.
+
+```javascript
+import { LitElement, html } from 'lit-element';
+
+class MyElement extends LitElement {
+
+  render(){
+    return html`
+      <form @submit=${this.handleSubmit}>
+        <input name="nombre">
+        <button>Enviar</button>
+      </form>
+    `;
+  }
+
+  handleSubmit() {
+    // el objeto this sigue haciendo referencia al componente
+  }
+
+}
+
+customElements.define('my-element', MyElement);
+```
+
+Para emitir eventos se utilizan los [Custom Events](../web-components/).
 
 
 
 ### Ciclo de vida
 
-aa
+LitElement extiende el [ciclo de vida](../web-components) de los custom elements con los siguientes "hooks" en orden de ejecución:
+
+1. **`someProperty.hasChanged`** el primer método que se dispara el definido en `hasChanged` para determinar si la propiedad ha cambiado.
+2. **`requestUpdate`** método con el que podemos iniciar un renderizado indicando la propiedad que ha cambiado.
+3. **`performUpdate`** LitElement utiliza este método para determinar cuando debería empezar a procesar los cambios en las propiedades. Por defecto, espera a `requestAnimationFrame`
+4. **`shouldUpdate`** método con el que podemos interrumpir el ciclo de vida. Devolviendo `false` detendremos el ciclo de vida, recibe un `Map`con las propiedades que han cambiado como argumento.
+5. **`update`** LitElement utiliza este método para actualizar los atributos si procede y llamar a `render`. 
+6. **`render`** método que devuelve el template `html` del componente. Siempre debe ser implementado.
+7. **`firstUpdated`** método ejecutado solo la primera vez que el componente ha pintado contenido.
+8. **`updated`** método ejecutado cada vez que se producen cambios en las propiedades del componente y este termina de pintar.
+9. **`updateComplete`** método ejecutado cuando el componente termina su ciclo de vida. Devuelve una `Promise` que podemos utilizar para ejecutar código cuando el componente es estable.
